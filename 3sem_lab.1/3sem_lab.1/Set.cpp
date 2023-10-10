@@ -9,6 +9,12 @@ unsigned int Set_::simpleHash(const std::string& str) {
 
 	unsigned int hash = 0;
 
+	if (str.length() == 0) {
+
+		return -1;
+
+	}
+
 	for (char element : str) {
 
 		hash += static_cast<unsigned int>(element);
@@ -33,17 +39,38 @@ void Set_::initialize(Set* container) {
 void Set_::insert(Set* container, S new_key, S new_data) {
 
 	int new_key_ = simpleHash(new_key);
+	int hash = new_key_ % SET_MAX_SIZE;
+	int temp_hash = hash;
 
-	if (container[new_key_ % SET_MAX_SIZE].data != "0") {
+	if (new_key_ == -1) {
 
-		return;
+		std::cout << "-> Zero-length key" << std::endl;
 
 	}
-
 	else {
 
-		container[new_key_ % SET_MAX_SIZE].data = new_data;
-		container[new_key_ % SET_MAX_SIZE].key = new_key;
+		int initialHash = hash;
+
+		do {
+			if (container[hash].key == "0") {
+
+				container[hash].data = new_data;
+				container[hash].key = new_key;
+				std::cout << "-> Data was inserted" << std::endl;
+				return;
+
+			}
+			else if (container[hash].key == new_key) {
+
+				std::cout << "-> The key already presented in the set" << std::endl;
+				return;
+
+			}
+			//линейное пробирование
+			hash = (hash + 1) % SET_MAX_SIZE;
+		} while (hash != initialHash);
+
+		std::cout << "-> No free slot" << std::endl;
 
 	}
 }
@@ -51,20 +78,33 @@ void Set_::insert(Set* container, S new_key, S new_data) {
 void Set_::remove(Set* container, S key) {
 
 	int key_ = simpleHash(key);
+	int hash = key_ % SET_MAX_SIZE;
 
-	if (container[key_ % SET_MAX_SIZE].data == "0") {
 
-		std::cout << "-> Set is empty" << std::endl;
+	if (key_ == -1) {
+
+		std::cout << "-> Zero-length key" << std::endl;
 		return;
 
 	}
 
-	else {
+	int initialHash = hash;
 
-		container[key_ % SET_MAX_SIZE].data = "0";
-		container[key_ % SET_MAX_SIZE].key = "0";
+	do {
 
-	}
+		if (container[hash].key == key) {
+
+			container[hash].data = "0";
+			container[hash].key = "0";
+			return;
+
+		}
+
+		//линейное пробирование
+		hash = (hash + 1) % SET_MAX_SIZE;
+	} while (hash != initialHash);
+
+	std::cout << "-> Key not found" << std::endl;
 
 }
 
@@ -72,6 +112,28 @@ S Set_::get(Set* container, S key) {
 
 	int key_ = simpleHash(key);
 
-	return container[key_ % SET_MAX_SIZE].data;
+	if (key_ == -1) {
+
+		return "-> Zero-length key";
+
+	}
+
+	int hash = key_ % SET_MAX_SIZE;
+
+	int initialHash = hash;
+
+	do {
+
+		if (container[hash].key == key) {
+
+			return container[hash].data;
+
+		}
+
+		//линейное пробирование
+		hash = (hash + 1) % SET_MAX_SIZE;
+	} while (hash != initialHash);
+
+	return "-> Key not found";
 
 }

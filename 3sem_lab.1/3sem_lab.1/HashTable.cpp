@@ -9,6 +9,12 @@ unsigned int HashTable_::simpleHash(const std::string& str) {
 
 	unsigned int hash = 0;
 
+	if (str.length() == 0) {
+
+		return -1;
+
+	}
+
 	for (char element : str) {
 
 		hash += static_cast<unsigned int>(element);
@@ -33,17 +39,32 @@ void HashTable_::initialize(HashTable* container) {
 void HashTable_::insert(HashTable* container, S new_key, S new_data) {
 
 	int new_key_ = simpleHash(new_key);
+	int hash = new_key_ % HASH_MAX_SIZE;
+	int temp_hash = hash;
 
-	if (container[new_key_ % HASH_MAX_SIZE].data != "0") {
+	if (new_key_ == -1) {
 
-		return;
+		std::cout << "-> Zero-length key" << std::endl;
 
 	}
-
 	else {
 
-		container[new_key_ % HASH_MAX_SIZE].data = new_data;
-		container[new_key_ % HASH_MAX_SIZE].key = new_key;
+		int initialHash = hash;
+
+		do {
+			if (container[hash].key == "0") {
+
+				container[hash].data = new_data;
+				container[hash].key = new_key;
+				std::cout <<  "-> Data was inserted" << std::endl;
+				return;
+
+			}
+			//линейное пробирование
+			hash = (hash + 1) % HASH_MAX_SIZE;
+		} while (hash != initialHash);
+
+		std::cout << "-> No free slot" << std::endl;
 
 	}
 }
@@ -53,46 +74,62 @@ void HashTable_::remove(HashTable* container, S key) {
 	int key_ = simpleHash(key);
 	int hash = key_ % HASH_MAX_SIZE;
 
-	if (container[hash].data == "0") {
 
-		std::cout << "-> Slot is empty" << std::endl;
+	if (key_ == -1) {
+
+		std::cout << "-> Zero-length key" << std::endl;
 		return;
 
 	}
 
-	else if (container[hash].key != key) {
+	int initialHash = hash;
 
-		std::cout << "-> A collision has occurred, select another key" << std::endl;
-		return;
+	do {
 
-	}
+		if(container[hash].key == key){
 
-	else {
+			container[hash].data = "0";
+			container[hash].key = "0";
+			return;
 
-		container[hash].data = "0";
-		container[hash].key = "0";
-		return;
+		}
 
-	}
+		//линейное пробирование
+		hash = (hash + 1) % HASH_MAX_SIZE;
+	} while (hash != initialHash);
+
+	std::cout << "-> Key not found" << std::endl;
 
 }
-
 
 S HashTable_::get(HashTable* container, S key) {
 
 	int key_ = simpleHash(key);
+
+	if (key_ == -1) {
+
+		return "-> Zero-length key";
+
+	}
+
 	int hash = key_ % HASH_MAX_SIZE;
 
-	if (container[hash].key == "0") {
+	int initialHash = hash;
 
-		return "Slot is empty";
+	do {
 
-	}
+		if (container[hash].key == key) {
 
-	if (container[hash].key != key) {
-		return "A collision has occurred, select another key";
-	}
+			std::cout << "-> " << container[hash].data << std::endl;
+			return "";
 
-	return container[hash].data;
+		}
+
+		//линейное пробирование
+		hash = (hash + 1) % HASH_MAX_SIZE;
+	} while (hash != initialHash);
+
+	std::cout << "-> Key not found" << std::endl;
+	return "";
 
 }

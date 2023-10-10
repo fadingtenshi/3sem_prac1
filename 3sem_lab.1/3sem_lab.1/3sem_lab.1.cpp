@@ -46,10 +46,15 @@ void sismember(const std::vector<std::string>& args, Set_::Set* setContainer) {
         std::cerr << "-> Invalid arguments for SISMEMBER" << std::endl;
     }
     else {
-
-        if (Set_::get(setContainer, args[1]) == args[2]) {
+        std::string result = Set_::get(setContainer, args[1]);
+        if (result == args[2]) {
 
             std::cout << "-> The element is present in the set" << std::endl;
+
+        }
+        else if (result == "-> Key not found") {
+
+            std::cout << result << std::endl;
 
         }
         else {
@@ -166,27 +171,17 @@ void hget(const std::vector<std::string>& args, HashTable_::HashTable* hashTable
 
         std::string result = HashTable_::get(hashTable, args[1]);
 
-        if (result == "A collision has occurred, select another key") {
+        if (result == "-> Zero-length key") {
 
-            std::cout << "-> " << result << std::endl;
-            return;
-
-        }
-
-        else if (result == "0") {
-
-            std::cout << "-> Hash table is empty" << std::endl;
-            return;
+            std::cout << result << std::endl;
 
         }
-
-        std::cout << "-> " << result << std::endl;
 
     }
 
 }
 
-void commandParse(const std::string& command, Set_::Set* commands) {
+void commandParse(const std::string& command, const std::vector<std::string>& commands) {
 
     static Set_::Set setContainer[SET_MAX_SIZE];
 
@@ -230,92 +225,68 @@ void commandParse(const std::string& command, Set_::Set* commands) {
 
     if (!args.empty()) {
         std::string argument = args[0];
-        if (Set_::get(commands, argument) != "0") {
+        if (argument == "SADD") {
 
-            if (argument == "SADD") {
-
-                sadd(args, setContainer);
-
-            }
-
-            else if (argument == "SREM") {
-
-                srem(args, setContainer);
-
-            }
-            else if (argument == "SISMEMBER") {
-
-                sismember(args, setContainer);
-
-            }
-            else if (argument == "SPUSH") {
-
-                spush(args, stackContainer);
-
-            }
-            else if (argument == "SPOP") {
-            
-                spop(args, stackContainer);;
-            
-            }
-            else if (argument == "QPUSH") {
-
-                qpush(args, &queueContainer);
-            
-            }
-            else if (argument == "QPOP") {
-            
-                qpop(args, &queueContainer);
-            
-            }
-            else if (argument == "HSET") {
-            
-                hset(args, hashTable);
-            
-            }
-            else if (argument == "HDEL") {
-            
-                hdel(args, hashTable);
-            
-            }
-            else if (argument == "HGET") {
-            
-                hget(args, hashTable);
-            
-            }
+            sadd(args, setContainer);
 
         }
-        else {
-            std::cerr << "Invalid command: " << command << std::endl;
+        else if (argument == "SREM") {
+
+            srem(args, setContainer);
+
         }
+        else if (argument == "SISMEMBER") {
+
+            sismember(args, setContainer);
+
+        }
+        else if (argument == "SPUSH") {
+
+            spush(args, stackContainer);
+
+        }
+        else if (argument == "SPOP") {
+
+            spop(args, stackContainer);;
+
+        }
+        else if (argument == "QPUSH") {
+
+            qpush(args, &queueContainer);
+
+        }
+        else if (argument == "QPOP") {
+
+            qpop(args, &queueContainer);
+
+        }
+        else if (argument == "HSET") {
+
+            hset(args, hashTable);
+
+        }
+        else if (argument == "HDEL") {
+
+            hdel(args, hashTable);
+
+        }
+        else if (argument == "HGET") {
+
+            hget(args, hashTable);
+
+        }
+
     }
-
-}
-
-void insertCommands(Set_::Set* commands) {
-
-    Set_::insert(commands, "SADD", "1");
-    Set_::insert(commands, "SREM", "2");
-    Set_::insert(commands, "SISMEMBER", "3");
-    Set_::insert(commands, "SPUSH", "4");
-    Set_::insert(commands, "SPOP", "5");
-    Set_::insert(commands, "QPUSH", "6");
-    Set_::insert(commands, "QPOP", "7");
-    Set_::insert(commands, "HSET", "8");
-    Set_::insert(commands, "HDEL", "9");
-    Set_::insert(commands, "HGET", "10");
-
+    else {
+        std::cerr << "Invalid command: " << command << std::endl;
+    }
 }
 
 int main() {
 
-    Set_::Set commands[SET_MAX_SIZE];
-    Set_::initialize(commands);
-    insertCommands(commands);
+    std::vector<std::string> commands = { "SADD", "SREM", "SISMEMBER", "SPUSH", "SPOP", "QPUSH", "QPOP", "HSET", "HDEL", "HGET" };
 
     std::cout << "Enter ./dbms --help for options" << std::endl;
-
-    static HashTable_::HashTable hashTable[HASH_MAX_SIZE];
 
     while (true) {
 
