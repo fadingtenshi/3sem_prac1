@@ -4,9 +4,9 @@ Required commands:
 - help: `./dbms --help`
 - queries: `./dbms --query [...]:`
   - Set:
-    - SADD [KEY] [VALUE]
+    - SADD [KEY]
     - SREM [KEY]
-    - SISMEMBER [KEY] [VALUE]
+    - SISMEMBER [KEY]
   - Stack:
     - SPUSH [KEY]
     - SPOP [KEY]
