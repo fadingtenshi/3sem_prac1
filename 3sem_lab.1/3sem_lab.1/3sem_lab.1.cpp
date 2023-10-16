@@ -16,12 +16,12 @@
 
 void sadd(const std::vector<std::string>& args, Set_::Set* setContainer) {
 
-    if (args.size() != 3) {
+    if (args.size() != 2) {
         std::cerr << "-> Invalid arguments for SADD" << std::endl;
     }
     else {
 
-        Set_::insert(setContainer, args[1], args[2]);
+        Set_::insert(setContainer, args[1]);
 
     }
 
@@ -42,12 +42,12 @@ void srem(const std::vector<std::string>& args, Set_::Set* setContainer) {
 
 void sismember(const std::vector<std::string>& args, Set_::Set* setContainer) {
 
-    if (args.size() != 3) {
+    if (args.size() != 2) {
         std::cerr << "-> Invalid arguments for SISMEMBER" << std::endl;
     }
     else {
         std::string result = Set_::get(setContainer, args[1]);
-        if (result == args[2]) {
+        if (result == args[1]) {
 
             std::cout << "-> The element is present in the set" << std::endl;
 

@@ -11,7 +11,6 @@ namespace Set_ {
 
 	struct Set {
 
-		S key;
 		S data;
 
 	};
@@ -20,10 +19,10 @@ namespace Set_ {
 
 	void initialize(Set* container);
 
-	void insert(Set* container, S new_key, S new_data);
+	void insert(Set* container, S new_data);
 
-	void remove(Set* container, S key);
+	void remove(Set* container, S data);
 
-	S get(Set* container, S key);
+	S get(Set* container, S data);
 
 };

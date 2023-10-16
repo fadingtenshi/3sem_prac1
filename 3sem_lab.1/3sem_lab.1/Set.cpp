@@ -29,18 +29,16 @@ void Set_::initialize(Set* container) {
 
 	for (short i = 0; i < SET_MAX_SIZE; i++) {
 
-		container[i].key = "0";
 		container[i].data = "0";
 
 	}
 
 }
 
-void Set_::insert(Set* container, S new_key, S new_data) {
+void Set_::insert(Set* container, S new_data) {
 
-	int new_key_ = simpleHash(new_key);
+	int new_key_ = simpleHash(new_data);
 	int hash = new_key_ % SET_MAX_SIZE;
-	int temp_hash = hash;
 
 	if (new_key_ == -1) {
 
@@ -52,15 +50,14 @@ void Set_::insert(Set* container, S new_key, S new_data) {
 		int initialHash = hash;
 
 		do {
-			if (container[hash].key == "0") {
+			if (container[hash].data == "0") {
 
 				container[hash].data = new_data;
-				container[hash].key = new_key;
 				std::cout << "-> Data was inserted" << std::endl;
 				return;
 
 			}
-			else if (container[hash].key == new_key) {
+			else if (container[hash].data == new_data) {
 
 				std::cout << "-> The key already presented in the set" << std::endl;
 				return;
@@ -75,9 +72,9 @@ void Set_::insert(Set* container, S new_key, S new_data) {
 	}
 }
 
-void Set_::remove(Set* container, S key) {
+void Set_::remove(Set* container, S data) {
 
-	int key_ = simpleHash(key);
+	int key_ = simpleHash(data);
 	int hash = key_ % SET_MAX_SIZE;
 
 
@@ -92,10 +89,9 @@ void Set_::remove(Set* container, S key) {
 
 	do {
 
-		if (container[hash].key == key) {
+		if (container[hash].data == data) {
 
 			container[hash].data = "0";
-			container[hash].key = "0";
 			return;
 
 		}
@@ -108,9 +104,9 @@ void Set_::remove(Set* container, S key) {
 
 }
 
-S Set_::get(Set* container, S key) {
+S Set_::get(Set* container, S data) {
 
-	int key_ = simpleHash(key);
+	int key_ = simpleHash(data);
 
 	if (key_ == -1) {
 
@@ -124,7 +120,7 @@ S Set_::get(Set* container, S key) {
 
 	do {
 
-		if (container[hash].key == key) {
+		if (container[hash].data == data) {
 
 			return container[hash].data;
 
