@@ -7,13 +7,11 @@
 
 
 
-#include "Stack.h"
-#include "Queue.h"
-#include "HashTable.h"
-#include "Set.h"
+#include "CommandsHandling.h"
 
 
 
+<<<<<<< Updated upstream
 void sadd(const std::vector<std::string>& args, Set_::Set* setContainer) {
 
     if (args.size() != 2) {
@@ -282,6 +280,8 @@ void commandParse(const std::string& command, const std::vector<std::string>& co
     }
 }
 
+=======
+>>>>>>> Stashed changes
 int main() {
 
     std::vector<std::string> commands = { "SADD", "SREM", "SISMEMBER", "SPUSH", "SPOP", "QPUSH", "QPOP", "HSET", "HDEL", "HGET" };

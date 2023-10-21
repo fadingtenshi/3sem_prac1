@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3sem_lab.1.cpp" />
+    <ClCompile Include="CommandsHandling.cpp" />
     <ClCompile Include="HashTable.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Set.cpp" />
     <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandsHandling.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Set.h" />

@@ -45,6 +45,15 @@ void HashTable_::insert(HashTable* container, S new_key, S new_data) {
 	if (new_key_ == -1) {
 
 		std::cout << "-> Zero-length key" << std::endl;
+<<<<<<< Updated upstream
+=======
+
+	}
+	else if (container[hash].key == new_key) {
+
+		std::cout << "-> This key already exist in the hashtable" << std::endl;
+		return;
+>>>>>>> Stashed changes
 
 	}
 	else {
